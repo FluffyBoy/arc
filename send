@@ -1,0 +1,45 @@
+#include <sstream>
+#include <string>
+#include <iostream>
+#include <windows.h>
+using namespace std;
+
+int main()
+{
+    string sPortName = "COM5";
+
+    HANDLE hSerial = CreateFile( sPortName.c_str(), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0 );
+    DCB dcbSerialParams = { 0 };
+    dcbSerialParams.DCBlength = sizeof( dcbSerialParams );
+    if( !GetCommState(hSerial, &dcbSerialParams) )
+    {
+        cout << "getting state error\n";
+        return -1;
+    }
+
+    dcbSerialParams.BaudRate = CBR_9600;
+    dcbSerialParams.ByteSize = 8;
+    dcbSerialParams.StopBits = ONESTOPBIT;
+    dcbSerialParams.Parity = NOPARITY;
+
+    if( !SetCommState( hSerial, &dcbSerialParams ) )
+    {
+        cout << "error setting serial port state\n";
+        return -2;
+    }
+
+    cout << "connected to " <<  sPortName;
+    char str ;
+    while(str!='e')
+
+    {cin>>str;
+
+
+  DWORD iSize = 0;
+    if ( ! WriteFile( hSerial, &str, 1, &iSize, 0 ) )
+        cout << "WRITE ERR\n";
+    }
+CloseHandle( hSerial );
+
+    return 0;
+}
