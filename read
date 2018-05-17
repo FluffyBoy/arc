@@ -1,0 +1,13 @@
+void setup() {
+  pinMode(13,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+int c=Serial.read();
+if (c!=-1)
+  //Serial.println(c);
+  if (c>=49) digitalWrite(13,HIGH);
+  if (c<=48) digitalWrite(13,LOW);
+  delay(1000);        // delay in between reads for stability
+}
